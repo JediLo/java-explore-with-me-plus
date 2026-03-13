@@ -3,18 +3,17 @@ package ru.practicum.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.model.ViewStats;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class EndPointHitDto {
+        private int id;
+        private String app;
+        private String uri;
+        private String ip;
+        private LocalDateTime timeRequest;
 
- public ViewStats toViewStats(EndPointHitDto endPointHitDto) {
-     return new ViewStats();
- }
-
- public EndPointHitDto toEndPointHitDto(ViewStats viewStats) {
-     return new EndPointHitDto();
- }
 }

@@ -3,20 +3,15 @@ package ru.practicum.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.model.ViewStats;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ViewStatsDto {
 
+    private String app;
+    private String uri;
+    private int hits;
 
-
-    public ViewStats toViewStats(ViewStatsDto viewStatsDto) {
-        return new ViewStats();
-    }
-
-    public ViewStatsDto toViewStatsDto(ViewStats viewStats) {
-        return new ViewStatsDto();
-    }
 }
