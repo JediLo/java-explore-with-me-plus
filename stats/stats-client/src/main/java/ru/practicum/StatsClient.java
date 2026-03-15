@@ -10,14 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.dto.EndPointHitDto;
+import ru.practicum.dto.StatsParamDto;
 import ru.practicum.model.ViewStats;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class StatsClient {
 
     private final RestTemplate restTemplate;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     public StatsClient(@Value("${stats-server.url:http://stats-server:9090}") String serverUrl, RestTemplateBuilder builder) {
@@ -30,17 +33,16 @@ public class StatsClient {
         restTemplate.postForEntity("/hit", hitDto, Void.class);
     }
 
-    public List<ViewStats> getStats(String start, String end, List<String> uris, Boolean unique) {
+    public List<ViewStats> getStats(StatsParamDto paramDto) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/stats")
-                .queryParam("start", start)
-                .queryParam("end", end);
+                .queryParam("start", paramDto.getStartTime().format(FORMATTER))
+                .queryParam("end", paramDto.getEndTime().format(FORMATTER));
 
-        if (uris != null && !uris.isEmpty()) {
-            builder.queryParam("uris", String.join(",", uris));
+        if (paramDto.getUris() != null && !paramDto.getUris().isBlank()) {
+            builder.queryParam("uris", paramDto.getUris());
         }
-        if (unique != null) {
-            builder.queryParam("unique", unique);
-        }
+
+        builder.queryParam("unique", paramDto.isUniques());
 
         ResponseEntity<List<ViewStats>> response = restTemplate.exchange(
                 builder.build().toUriString(),
