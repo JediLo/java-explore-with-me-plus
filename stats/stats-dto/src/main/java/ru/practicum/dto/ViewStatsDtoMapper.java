@@ -10,7 +10,11 @@ public class ViewStatsDtoMapper {
         return new ViewStats();
     }
 
-    public static ViewStatsDto toViewStatsDto(ViewStats viewStats) {
-        return new ViewStatsDto();
+    public static ViewStatsDto toViewStatsDto(ViewStats viewStats, Long hits) {
+        ViewStatsDto viewStatsDto = new ViewStatsDto();
+        viewStatsDto.setHits(hits);
+        viewStatsDto.setApp(viewStats.getApp());
+        viewStatsDto.setUri(viewStats.getUri());
+        return viewStatsDto;
     }
 }
