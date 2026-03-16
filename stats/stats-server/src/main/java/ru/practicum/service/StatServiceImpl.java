@@ -25,26 +25,26 @@ public class StatServiceImpl implements StatsService {
 
     @Override
     public Collection<ViewStatsDto> getStats(StatsParamDto paramDto) {
-        if (paramDto.getStart() == null || paramDto.getEnd() == null) {
+        if (paramDto.getStartTime() == null || paramDto.getEndTime() == null) {
             throw new IllegalArgumentException("start and end must not be null");
         }
-        if (paramDto.getStart().isAfter(paramDto.getEnd())) {
+        if (paramDto.getStartTime().isAfter(paramDto.getEndTime())) {
             throw new IllegalArgumentException("start must not be after end");
         }
 
-        boolean unique = paramDto.isUnique();
+        boolean unique = paramDto.isUniques();
         List<String> uris = paramDto.getUris();
 
         if (uris == null || uris.isEmpty()) {
             if (unique) {
-                return statisticHitRepository.getUniqueStats(paramDto.getStart(), paramDto.getEnd());
+                return statisticHitRepository.getUniqueStats(paramDto.getStartTime(), paramDto.getEndTime());
             }
-            return statisticHitRepository.getStats(paramDto.getStart(), paramDto.getEnd());
+            return statisticHitRepository.getStats(paramDto.getStartTime(), paramDto.getEndTime());
         }
 
         if (unique) {
-            return statisticHitRepository.getUniqueStatsByUris(paramDto.getStart(), paramDto.getEnd(), uris);
+            return statisticHitRepository.getUniqueStatsByUris(paramDto.getStartTime(), paramDto.getEndTime(), uris);
         }
-        return statisticHitRepository.getStatsByUris(paramDto.getStart(), paramDto.getEnd(), uris);
+        return statisticHitRepository.getStatsByUris(paramDto.getStartTime(), paramDto.getEndTime(), uris);
     }
 }

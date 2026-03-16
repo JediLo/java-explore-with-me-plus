@@ -12,7 +12,7 @@ public class StatisticHitMapper {
         hit.setApp(dto.getApp());
         hit.setUri(dto.getUri());
         hit.setIp(dto.getIp());
-        hit.setHitTime(dto.getTimestamp());
+        hit.setHitTime(dto.getTimeRequest());
         return hit;
     }
 }
