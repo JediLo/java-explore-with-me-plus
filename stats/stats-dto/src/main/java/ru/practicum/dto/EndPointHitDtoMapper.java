@@ -11,7 +11,7 @@ public class EndPointHitDtoMapper {
         viewStats.setApp(endPointHitDto.getApp());
         viewStats.setUri(endPointHitDto.getUri());
         viewStats.setIp(endPointHitDto.getIp());
-        viewStats.setHitTime(endPointHitDto.getTimeRequest());
+        viewStats.setHitTime(endPointHitDto.getTimestamp());
         return viewStats;
     }
 
@@ -20,7 +20,7 @@ public class EndPointHitDtoMapper {
         endPointHitDto.setApp(viewStats.getApp());
         endPointHitDto.setUri(viewStats.getUri());
         endPointHitDto.setIp(viewStats.getIp());
-        endPointHitDto.setTimeRequest(viewStats.getHitTime());
+        endPointHitDto.setTimestamp(viewStats.getHitTime());
         return new EndPointHitDto();
     }
 }
