@@ -26,8 +26,7 @@ public interface StatisticHitRepository extends JpaRepository<StatisticHit, Long
             from StatisticHit h
             where h.hitTime between :start and :end
             group by h.app, h.uri
-            order by count(distinct h.ip) desc
-                        
+            order by count(distinct h.ip) desc        
             """)
     List<ViewStatsDto> getUniqueStats(@Param("start") LocalDateTime start,
                                      @Param("end") LocalDateTime end);
