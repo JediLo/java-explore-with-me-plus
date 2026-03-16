@@ -1,7 +1,6 @@
 package ru.practicum;
 
 
-
 import ru.practicum.model.ViewStats;
 
 import java.util.Collection;

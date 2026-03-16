@@ -4,13 +4,23 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.model.ViewStats;
 
 @UtilityClass
-public  class EndPointHitDtoMapper {
+public class EndPointHitDtoMapper {
 
     public static ViewStats toViewStats(EndPointHitDto endPointHitDto) {
-        return new ViewStats();
+        ViewStats viewStats = new ViewStats();
+        viewStats.setApp(endPointHitDto.getApp());
+        viewStats.setUri(endPointHitDto.getUri());
+        viewStats.setIp(endPointHitDto.getIp());
+        viewStats.setHitTime(endPointHitDto.getTimeRequest());
+        return viewStats;
     }
 
     public static EndPointHitDto toEndPointHitDto(ViewStats viewStats) {
+        EndPointHitDto endPointHitDto = new EndPointHitDto();
+        endPointHitDto.setApp(viewStats.getApp());
+        endPointHitDto.setUri(viewStats.getUri());
+        endPointHitDto.setIp(viewStats.getIp());
+        endPointHitDto.setTimeRequest(viewStats.getHitTime());
         return new EndPointHitDto();
     }
 }
