@@ -3,7 +3,7 @@ WORKDIR /build
 
 COPY . .
 
-RUN mvn -q -pl stats/stats-server -am package -DskipTests
+RUN mvn -q -pl stats/stats-server -am clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-jammy
 VOLUME /tmp
