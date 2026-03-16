@@ -38,7 +38,7 @@ public class StatsClient {
                 .queryParam("start", paramDto.getStartTime().format(FORMATTER))
                 .queryParam("end", paramDto.getEndTime().format(FORMATTER));
 
-        if (paramDto.getUris() != null && !paramDto.getUris().isBlank()) {
+        if (paramDto.getUris() != null && !paramDto.getUris().isEmpty()) {
             builder.queryParam("uris", paramDto.getUris());
         }
 
