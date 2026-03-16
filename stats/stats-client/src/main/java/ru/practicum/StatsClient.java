@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.practicum.dto.EndPointHitDto;
 import ru.practicum.dto.StatsParamDto;
-import ru.practicum.model.ViewStats;
+import ru.practicum.dto.ViewStatsDto;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -19,8 +19,8 @@ import java.util.List;
 @Service
 public class StatsClient {
 
-    private final RestTemplate restTemplate;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final RestTemplate restTemplate;
 
     @Autowired
     public StatsClient(@Value("${stats-server.url:http://stats-server:9090}") String serverUrl, RestTemplateBuilder builder) {
@@ -33,7 +33,7 @@ public class StatsClient {
         restTemplate.postForEntity("/hit", hitDto, Void.class);
     }
 
-    public List<ViewStats> getStats(StatsParamDto paramDto) {
+    public List<ViewStatsDto> getStats(StatsParamDto paramDto) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/stats")
                 .queryParam("start", paramDto.getStartTime().format(FORMATTER))
                 .queryParam("end", paramDto.getEndTime().format(FORMATTER));
@@ -44,11 +44,12 @@ public class StatsClient {
 
         builder.queryParam("unique", paramDto.isUniques());
 
-        ResponseEntity<List<ViewStats>> response = restTemplate.exchange(
+        ResponseEntity<List<ViewStatsDto>> response = restTemplate.exchange(
                 builder.build().toUriString(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {}
+                new ParameterizedTypeReference<>() {
+                }
         );
 
         return response.getBody();
