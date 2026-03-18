@@ -9,10 +9,10 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name = "categories")
 @Getter
 @Setter
+@Entity
+@Table(name = "categories")
 public class Category {
 
     @Id
