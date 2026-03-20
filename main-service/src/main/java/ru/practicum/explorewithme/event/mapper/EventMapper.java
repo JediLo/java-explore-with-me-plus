@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import ru.practicum.explorewithme.category.dto.CategoryDto;
 import ru.practicum.explorewithme.category.model.Category;
 import ru.practicum.explorewithme.event.dto.EventFullDto;
+import ru.practicum.explorewithme.event.dto.EventShortDto;
 import ru.practicum.explorewithme.event.dto.LocationDto;
 import ru.practicum.explorewithme.event.dto.NewEventDto;
 import ru.practicum.explorewithme.event.model.Event;
@@ -74,4 +75,9 @@ public class EventMapper {
         }
         return new LocationDto(lat, lon);
     }
+
+    public static EventShortDto toShortDto(Event event, EventShortDto statsDto) {
+        return new EventShortDto();
+    }
+
 }
