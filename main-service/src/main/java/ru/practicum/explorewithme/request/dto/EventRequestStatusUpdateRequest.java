@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.request.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithme.request.model.RequestStatus;
@@ -8,6 +9,7 @@ import ru.practicum.explorewithme.request.model.RequestStatus;
 import java.util.List;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventRequestStatusUpdateRequest {
