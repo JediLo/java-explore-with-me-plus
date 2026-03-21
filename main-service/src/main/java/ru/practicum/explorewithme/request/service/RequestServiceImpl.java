@@ -113,7 +113,7 @@ public class RequestServiceImpl implements RequestService {
         List<ParticipationRequestDto> rejected = new ArrayList<>();
 
         for (Request r : requests) {
-            if ("CONFIRMED".equals(dto.getStatus())) {
+            if (dto.getStatus() == RequestStatus.CONFIRMED) {
                 r.setStatus(RequestStatus.CONFIRMED);
                 confirmed.add(RequestMapper.toDto(r));
             } else {
