@@ -12,6 +12,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     interface EventConfirmedCount {
         Long getEventId();
+
         Long getCnt();
     }
 
