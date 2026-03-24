@@ -25,7 +25,7 @@ public class CompilationController {
     }
 
     @GetMapping
-    public List<CompilationDto> getCompilations(@RequestParam(name = "pinned") boolean pinned,
+    public List<CompilationDto> getCompilations(@RequestParam(required = false) boolean pinned,
                                                 @PositiveOrZero @RequestParam(name = "from", defaultValue = "0") Integer from,
                                                 @Positive @RequestParam(name = "size", defaultValue = "10") Integer size) {
         log.info("getCompilations By pinned {}", pinned);
