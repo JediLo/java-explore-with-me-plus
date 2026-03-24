@@ -19,8 +19,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     Optional<Request> findByRequesterIdAndEventId(Long userId, Long eventId);
 
-public interface RequestRepository extends JpaRepository<Request, Long> {
-
     interface EventConfirmedCount {
         Long getEventId();
 
@@ -32,5 +30,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             "where r.event.id in :eventIds and r.status = :status " +
             "group by r.event.id")
     List<EventConfirmedCount> countByEventIdsAndStatus(@Param("eventIds") List<Long> eventIds,
-                                                      @Param("status") RequestStatus status);
+                                                       @Param("status") RequestStatus status);
 }
