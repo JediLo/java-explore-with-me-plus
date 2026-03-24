@@ -25,4 +25,10 @@ public class Compilation {
     private Boolean pinned;
     @Column(nullable = false, length = 50)
     private String title;
+
+    public Compilation(List<Event> events, Boolean pinned, String title) {
+        this.events = events;
+        this.pinned = pinned;
+        this.title = title;
+    }
 }
