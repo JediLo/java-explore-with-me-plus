@@ -39,9 +39,9 @@ public final class RequestMapper {
             List<Request> confirmed,
             List<Request> rejected
     ) {
-        return new EventRequestStatusUpdateResult(
-                toDtoList(confirmed),
-                toDtoList(rejected)
-        );
+        return EventRequestStatusUpdateResult.builder()
+                .confirmedRequests(toDtoList(confirmed))
+                .rejectedRequests(toDtoList(rejected))
+                .build();
     }
 }
