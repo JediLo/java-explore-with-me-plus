@@ -76,8 +76,21 @@ public class EventMapper {
         return new LocationDto(lat, lon);
     }
 
-    public static EventShortDto toShortDto(Event event, EventShortDto statsDto) {
-        return new EventShortDto();
+    public static EventShortDto toEventShortDto(Event event, long confirmedRequests, long views) {
+        if (event == null) {
+            return null;
+        }
+        return new EventShortDto(
+                event.getId(),
+                event.getAnnotation(),
+                toCategoryDto(event.getCategory()),
+                confirmedRequests,
+                event.getEventDate(),
+                toUserShortDto(event.getInitiator()),
+                event.isPaid(),
+                event.getTitle(),
+                views
+        );
     }
 
 }
