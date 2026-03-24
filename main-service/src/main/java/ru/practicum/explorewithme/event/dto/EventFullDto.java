@@ -40,7 +40,6 @@ public class EventFullDto {
     private LocationDto location;
 
     private Boolean paid;
-    
     @PositiveOrZero
     private Integer participantLimit;
 
