@@ -19,8 +19,8 @@ import java.util.List;
 @Service
 public class StatsClient {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final RestTemplate restTemplate;
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     public StatsClient(@Value("${stats-server.url:http://stats-server:9090}") String serverUrl, RestTemplateBuilder builder) {
@@ -48,8 +48,7 @@ public class StatsClient {
                 builder.build().toUriString(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {
-                }
+                new ParameterizedTypeReference<List<ViewStatsDto>>() {}
         );
 
         return response.getBody();

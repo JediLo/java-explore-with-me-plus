@@ -51,7 +51,7 @@ public class Event {
     private int participantLimit;
 
     @Column(name = "request_moderation", nullable = false)
-    private boolean requestModeration;
+    private Boolean requestModeration;
 
     @Column(nullable = false, length = 120)
     private String title;
