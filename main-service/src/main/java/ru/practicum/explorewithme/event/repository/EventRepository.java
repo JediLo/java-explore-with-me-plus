@@ -10,4 +10,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @EntityGraph(attributePaths = {"initiator", "category"})
     Page<Event> findAllByInitiatorId(Long initiatorId, Pageable pageable);
+
+    boolean existsByCategoryId(Long categoryId);
 }
