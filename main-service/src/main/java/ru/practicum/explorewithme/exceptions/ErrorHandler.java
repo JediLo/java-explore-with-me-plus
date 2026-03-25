@@ -38,8 +38,12 @@ public class ErrorHandler {
                 ex.getMessage());
     }
 
-    @ExceptionHandler({ConditionsNotMetException.class, ForbiddenException.class})
-    public ResponseEntity<ApiError> handleConditionsNotMet(ConditionsNotMetException ex) {
+    @ExceptionHandler({
+            ConditionsNotMetException.class,
+            ForbiddenException.class,
+            ConflictException.class
+    })
+    public ResponseEntity<ApiError> handleConditionsNotMet(RuntimeException ex) {
         log.warn("Нарушены условия операции: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.CONFLICT,
                 "For the requested operation the conditions are not met.",
