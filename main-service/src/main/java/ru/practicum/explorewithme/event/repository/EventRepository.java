@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.EntityGraph;
 import ru.practicum.explorewithme.event.model.Event;
 
-public interface EventRepository extends JpaRepository<Event, Long> {
+public interface EventRepository extends JpaRepository<Event, Long>, EventRepositoryCustom {
 
     @EntityGraph(attributePaths = {"initiator", "category"})
     Page<Event> findAllByInitiatorId(Long initiatorId, Pageable pageable);
