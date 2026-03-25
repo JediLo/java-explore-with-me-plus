@@ -2,43 +2,44 @@ package ru.practicum.explorewithme.compilations.mapper;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.explorewithme.compilations.dto.CompilationDto;
+import ru.practicum.explorewithme.compilations.dto.CompilationWithStats;
 import ru.practicum.explorewithme.compilations.dto.NewCompilationDto;
 import ru.practicum.explorewithme.compilations.model.Compilation;
+import ru.practicum.explorewithme.event.dto.EventShortDto;
 import ru.practicum.explorewithme.event.dto.EventStatsDto;
-import ru.practicum.explorewithme.event.model.Event;
 import ru.practicum.explorewithme.event.mapper.EventMapper;
+import ru.practicum.explorewithme.event.model.Event;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class CompilationMapper {
 
     public static Compilation toCompilation(NewCompilationDto dto, List<Event> events) {
-        Compilation compilation = new Compilation();
-        compilation.setTitle(dto.getTitle());
-        compilation.setPinned(dto.getPinned() != null ? dto.getPinned() : false);
-        compilation.setEvents(events);
-        return compilation;
+        return new Compilation(events, dto.getPinned(), dto.getTitle());
     }
 
-    public static CompilationDto toDto(Compilation compilation, Map<Long, EventStatsDto> stats) {
-        return new CompilationDto(
-                compilation.getId(),
-                compilation.getEvents().stream()
-                        .map(event -> {
-                            // Извлекаем статистику для конкретного события из мапы
-                            EventStatsDto eventStats = stats.getOrDefault(event.getId(), new EventStatsDto(0L, 0L));
-                            return EventMapper.toEventShortDto(
-                                    event,
-                                    eventStats.getConfirmedRequests(),
-                                    eventStats.getViews()
-                            );
-                        })
-                        .collect(Collectors.toList()),
-                compilation.getPinned(),
-                compilation.getTitle()
-        );
+    public static CompilationDto toDto(CompilationWithStats param) {
+        Compilation compilation = param.getCompilation();
+        List<Event> events = compilation.getEvents();
+        Map<Long, EventStatsDto> statsDtoMap = param.getStatsDtoMap();
+
+        List<EventShortDto> shortEvents = events.stream()
+                .map(event -> {
+                    EventStatsDto stats = statsDtoMap.getOrDefault(
+                            event.getId(),
+                            new EventStatsDto(0L, 0L)
+                    );
+                    return EventMapper.toEventShortDto(event, stats.getConfirmedRequests(), stats.getViews());
+                })
+                .toList();
+
+        return new CompilationDto(compilation.getId(), shortEvents, compilation.getPinned(), compilation.getTitle());
+    }
+
+
+    public static List<CompilationDto> toListDto(List<CompilationWithStats> params) {
+        return params.stream().map(CompilationMapper::toDto).toList();
     }
 }
