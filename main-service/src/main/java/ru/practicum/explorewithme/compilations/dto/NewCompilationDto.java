@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NewCompilationDto {
-    // Обязательно в этом списке должны быть уникальные события
     private List<Long> events;
     private Boolean pinned;
     @NotBlank

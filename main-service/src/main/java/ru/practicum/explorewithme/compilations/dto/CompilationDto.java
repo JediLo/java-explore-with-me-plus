@@ -16,7 +16,6 @@ import java.util.List;
 public class CompilationDto {
     @NotNull
     private Long id;
-    // Обязательно в этом списке должны быть уникальные события
     private List<EventShortDto> events;
     @NotNull
     private Boolean pinned;
