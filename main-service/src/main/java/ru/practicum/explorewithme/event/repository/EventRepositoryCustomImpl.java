@@ -29,16 +29,16 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
 
         BooleanBuilder builder = new BooleanBuilder();
 
-        if (settingSearch.getUserIds() != null && !settingSearch.getUserIds().isEmpty()) {
-            builder.and(event.initiator.id.in(settingSearch.getUserIds()));
+        if (settingSearch.getUsers() != null && !settingSearch.getUsers().isEmpty()) {
+            builder.and(event.initiator.id.in(settingSearch.getUsers()));
         }
 
         if (settingSearch.getStates() != null && !settingSearch.getStates().isEmpty()) {
             builder.and(event.state.in(settingSearch.getStates()));
         }
 
-        if (settingSearch.getCategoriesIds() != null && !settingSearch.getCategoriesIds().isEmpty()) {
-            builder.and(event.category.id.in(settingSearch.getCategoriesIds()));
+        if (settingSearch.getCategories() != null && !settingSearch.getCategories().isEmpty()) {
+            builder.and(event.category.id.in(settingSearch.getCategories()));
         }
 
         if (settingSearch.getRangeStart() != null) {
