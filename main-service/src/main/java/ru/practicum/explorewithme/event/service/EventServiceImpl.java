@@ -190,9 +190,9 @@ public class EventServiceImpl implements EventService {
 
     private EventAdminSettingSearchDto addDefaultValueToSettingDto(EventAdminSettingSearchDto settingSearchDto) {
         return new EventAdminSettingSearchDto(
-                settingSearchDto.getUserIds(),
+                settingSearchDto.getUsers(),
                 settingSearchDto.getStates(),
-                settingSearchDto.getCategoriesIds(),
+                settingSearchDto.getCategories(),
                 settingSearchDto.getRangeStart(),
                 settingSearchDto.getRangeEnd(),
                 settingSearchDto.getFrom() != null ? settingSearchDto.getFrom() : 0,

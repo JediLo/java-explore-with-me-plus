@@ -16,9 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventAdminSettingSearchDto {
-    private List<Long> userIds;
+    private List<Long> users;
     private List<EventState>  states;
-    private List<Long> categoriesIds;
+    private List<Long> categories;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rangeStart;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
