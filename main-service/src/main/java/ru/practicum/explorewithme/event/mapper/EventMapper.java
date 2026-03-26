@@ -8,6 +8,9 @@ import ru.practicum.explorewithme.event.model.Event;
 import ru.practicum.explorewithme.user.dto.UserShortDto;
 import ru.practicum.explorewithme.user.model.User;
 
+import java.util.List;
+import java.util.Map;
+
 @UtilityClass
 public class EventMapper {
 
@@ -31,7 +34,7 @@ public class EventMapper {
         return event;
     }
 
-    public static EventFullDto toEventFullDto(Event event, long confirmedRequests, long views) {
+    public static EventFullDto toEventFullDto(Event event, EventStatsDto statsDto) {
         return EventFullDto.builder()
                 .id(event.getId())
                 .annotation(event.getAnnotation())
@@ -47,9 +50,19 @@ public class EventMapper {
                 .category(toCategoryDto(event.getCategory()))
                 .initiator(toUserShortDto(event.getInitiator()))
                 .location(toLocationDto(event.getLat(), event.getLon()))
-                .confirmedRequests(confirmedRequests)
-                .views(views)
+                .confirmedRequests(statsDto.getConfirmedRequests())
+                .views(statsDto.getViews())
                 .build();
+    }
+
+    public static List<EventFullDto> toEventFullDto(List<Event> events, Map<Long, EventStatsDto> statsDto) {
+        return
+                events.stream()
+                        .map(event -> EventMapper.toEventFullDto(
+                                event,
+                                statsDto.getOrDefault(event.getId(), new EventStatsDto(0L, 0L))
+                        ))
+                        .toList();
     }
 
     private static CategoryDto toCategoryDto(Category category) {
@@ -73,21 +86,30 @@ public class EventMapper {
         return new LocationDto(lat, lon);
     }
 
-    public static EventShortDto toEventShortDto(Event event, long confirmedRequests, long views) {
-        if (event == null) {
-            return null;
-        }
+    public static EventShortDto toEventShortDto(Event event, EventStatsDto statsDto) {
+
         return new EventShortDto(
                 event.getId(),
                 event.getAnnotation(),
                 toCategoryDto(event.getCategory()),
-                confirmedRequests,
+                statsDto.getConfirmedRequests(),
                 event.getEventDate(),
                 toUserShortDto(event.getInitiator()),
                 event.isPaid(),
                 event.getTitle(),
-                views
+                statsDto.getViews()
         );
     }
+
+    public static List<EventShortDto> toEventShortDto(List<Event> events, Map<Long, EventStatsDto> statsDto) {
+        return
+                events.stream()
+                        .map(event -> EventMapper.toEventShortDto(
+                                event,
+                                statsDto.getOrDefault(event.getId(), new EventStatsDto(0L, 0L))
+                        ))
+                        .toList();
+    }
+
 
 }

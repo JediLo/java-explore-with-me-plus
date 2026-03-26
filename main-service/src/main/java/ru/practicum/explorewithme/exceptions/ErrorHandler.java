@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import ru.practicum.explorewithme.exceptions.dto.ApiError;
 
 import java.time.LocalDateTime;
@@ -22,7 +23,7 @@ public class ErrorHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class, ConstraintViolationException.class,
             MissingServletRequestParameterException.class, HttpMessageNotReadableException.class,
-            IllegalArgumentException.class})
+            IllegalArgumentException.class, HandlerMethodValidationException.class, ValidationException.class})
     public ResponseEntity<ApiError> handleBadRequest(Exception ex) {
         log.warn("Некорректный запрос: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.BAD_REQUEST,
@@ -54,7 +55,7 @@ public class ErrorHandler {
     public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex) {
         log.warn("Нарушение целостности данных: {}",
                 ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage());
-        return buildErrorResponse(HttpStatus.CONFLICT,
+        return buildErrorResponse(HttpStatus.BAD_REQUEST,
                 "Integrity constraint has been violated.",
                 ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage());
     }

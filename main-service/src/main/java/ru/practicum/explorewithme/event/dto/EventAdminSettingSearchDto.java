@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.practicum.explorewithme.event.model.EventState;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class EventAdminSettingSearchDto {
     private List<Long> users;
-    private List<EventState>  states;
+    private List<EventState> states;
     private List<Long> categories;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime rangeStart;

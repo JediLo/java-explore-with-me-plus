@@ -17,7 +17,7 @@ import java.util.Map;
 public class CompilationMapper {
 
     public static Compilation toCompilation(NewCompilationDto dto, List<Event> events) {
-        return new Compilation(events, dto.getPinned(), dto.getTitle());
+        return new Compilation(events, dto.isPinned(), dto.getTitle());
     }
 
     public static CompilationDto toDto(CompilationWithStats param) {
@@ -31,7 +31,7 @@ public class CompilationMapper {
                             event.getId(),
                             new EventStatsDto(0L, 0L)
                     );
-                    return EventMapper.toEventShortDto(event, stats.getConfirmedRequests(), stats.getViews());
+                    return EventMapper.toEventShortDto(event, stats);
                 })
                 .toList();
 
