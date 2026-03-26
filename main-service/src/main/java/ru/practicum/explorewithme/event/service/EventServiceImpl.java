@@ -242,7 +242,7 @@ public class EventServiceImpl implements EventService {
         List<Long> eventIds = events.stream()
                 .map(Event::getId)
                 .toList();
-        Map<Long, Long> confirmedByEventId = getConfirmedRequestsByEventIds(eventIds);  //todo протестить по факту
+        Map<Long, Long> confirmedByEventId = getConfirmedRequestsByEventIds(eventIds);
         Map<Long, Long> viewsByEventId = getViewsByEventIds(eventIds);
 
         return eventIds.stream()
