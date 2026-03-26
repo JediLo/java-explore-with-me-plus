@@ -27,7 +27,7 @@ public class CompilationAdminController {
 
     @PatchMapping("/{compId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDto updateCompilation(@RequestBody(required = false) UpdateCompilationRequest updateCompilationRequest,
+    public CompilationDto updateCompilation(@RequestBody @Valid UpdateCompilationRequest updateCompilationRequest,
                                             @PathVariable @NotNull Long compId) {
         log.info("updateCompilation: {}", updateCompilationRequest);
         return compilationService.updateCompilation(updateCompilationRequest, compId);
