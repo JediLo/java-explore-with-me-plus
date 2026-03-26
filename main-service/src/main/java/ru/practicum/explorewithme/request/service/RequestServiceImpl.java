@@ -154,6 +154,10 @@ public class RequestServiceImpl implements RequestService {
         long confirmedCount = requestRepository.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
         int limit = event.getParticipantLimit();
 
+        if (dto.getStatus() == UpdateRequestStatus.CONFIRMED && limit > 0 && confirmedCount >= limit) {
+            throw new ConflictException("У события достигнут лимит запросов на участие");
+        }
+
         List<Request> confirmed = new ArrayList<>();
         List<Request> rejected = new ArrayList<>();
 
@@ -162,16 +166,23 @@ public class RequestServiceImpl implements RequestService {
                 if (limit > 0 && confirmedCount >= limit) {
                     request.setStatus(RequestStatus.REJECTED);
                     rejected.add(request);
-                    continue;
+                } else {
+                    request.setStatus(RequestStatus.CONFIRMED);
+                    confirmed.add(request);
+                    confirmedCount++;
                 }
-
-                request.setStatus(RequestStatus.CONFIRMED);
-                confirmed.add(request);
-                confirmedCount++;
             } else {
                 request.setStatus(RequestStatus.REJECTED);
                 rejected.add(request);
             }
+        }
+
+        if (dto.getStatus() == UpdateRequestStatus.CONFIRMED && limit > 0 && confirmedCount >= limit) {
+            List<Request> pendingRequests = requestRepository.findByEventIdAndStatus(eventId, RequestStatus.PENDING);
+            for (Request pending : pendingRequests) {
+                pending.setStatus(RequestStatus.REJECTED);
+            }
+            requestRepository.saveAll(pendingRequests);
         }
 
         requestRepository.saveAll(requests);

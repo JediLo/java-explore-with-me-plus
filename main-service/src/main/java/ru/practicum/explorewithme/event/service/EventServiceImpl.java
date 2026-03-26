@@ -31,6 +31,7 @@ import ru.practicum.explorewithme.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -85,6 +86,24 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable).getContent();
 
         if (events.isEmpty()) {
+            final int maxAttempts = 20;
+            log.info("Events list is empty for userId={} (from={}, size={}); retrying up to {} times", userId, from, size,
+                    maxAttempts);
+            for (int attempt = 1; attempt <= maxAttempts && events.isEmpty(); attempt++) {
+                log.debug("Events list is empty for userId={}, retry attempt {}/{}", userId, attempt, maxAttempts);
+                try {
+                    long backoffMs = Math.min(200L * attempt, 1000L);
+                    Thread.sleep(backoffMs);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                events = eventRepository.findAllByInitiatorId(userId, pageable).getContent();
+            }
+        }
+
+        if (events.isEmpty()) {
+            log.info("No events found for userId={} after retries (from={}, size={})", userId, from, size);
             return Collections.emptyList();
         }
 
@@ -92,6 +111,67 @@ public class EventServiceImpl implements EventService {
         Map<Long, EventStatsDto> stats = loadEventStats(events);
 
         return EventMapper.toEventShortDto(events, stats);
+    }
+
+    @Override
+    public List<EventShortDto> getPublicEvents(String text,
+                                               List<Long> categories,
+                                               Boolean paid,
+                                               LocalDateTime rangeStart,
+                                               LocalDateTime rangeEnd,
+                                               Boolean onlyAvailable,
+                                               PublicEventSort sort,
+                                               int from,
+                                               int size) {
+        if (rangeStart != null && rangeEnd != null && rangeStart.isAfter(rangeEnd)) {
+            throw new ValidationException("rangeStart must not be after rangeEnd");
+        }
+        boolean sortByEventDate = sort == null || sort == PublicEventSort.EVENT_DATE;
+
+        Integer repoFrom = sort == PublicEventSort.VIEWS ? null : from;
+        Integer repoSize = sort == PublicEventSort.VIEWS ? null : size;
+
+        List<Event> events = eventRepository.findPublicEvents(
+                text,
+                categories,
+                paid,
+                rangeStart,
+                rangeEnd,
+                onlyAvailable,
+                repoFrom,
+                repoSize,
+                sortByEventDate
+        );
+
+        if (events.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        Map<Long, EventStatsDto> stats = loadEventStats(events);
+        List<EventShortDto> result = EventMapper.toEventShortDto(events, stats);
+
+        if (sort == PublicEventSort.VIEWS) {
+            result.sort(Comparator.comparing(EventShortDto::getViews, Comparator.nullsFirst(Long::compareTo)).reversed());
+
+            int start = Math.min(from, result.size());
+            int end = Math.min(from + size, result.size());
+            return result.subList(start, end);
+        }
+
+        return result;
+    }
+
+    @Override
+    public EventFullDto getPublicEventById(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> eventNotFound(eventId));
+
+        if (event.getState() != EventState.PUBLISHED) {
+            throw eventNotFound(eventId);
+        }
+
+        EventStatsDto stats = loadEventStats(event);
+        return EventMapper.toEventFullDto(event, stats);
     }
 
     @Override
@@ -162,7 +242,7 @@ public class EventServiceImpl implements EventService {
         List<Long> eventIds = events.stream()
                 .map(Event::getId)
                 .toList();
-        Map<Long, Long> confirmedByEventId = getConfirmedRequestsByEventIds(eventIds);  //todo протестить по факту
+        Map<Long, Long> confirmedByEventId = getConfirmedRequestsByEventIds(eventIds);
         Map<Long, Long> viewsByEventId = getViewsByEventIds(eventIds);
 
         return eventIds.stream()
@@ -208,7 +288,7 @@ public class EventServiceImpl implements EventService {
                 .map(id -> "/events/" + id)
                 .collect(Collectors.toList());
 
-        StatsParamDto params = new StatsParamDto(STATS_START, LocalDateTime.now(), uris, false);
+        StatsParamDto params = new StatsParamDto(STATS_START, LocalDateTime.now(), uris, true);
 
         List<ViewStatsDto> stats;
         try {

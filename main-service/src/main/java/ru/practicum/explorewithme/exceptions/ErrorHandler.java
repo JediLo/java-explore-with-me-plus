@@ -55,7 +55,7 @@ public class ErrorHandler {
     public ResponseEntity<ApiError> handleDataIntegrity(DataIntegrityViolationException ex) {
         log.warn("Нарушение целостности данных: {}",
                 ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage());
-        return buildErrorResponse(HttpStatus.BAD_REQUEST,
+        return buildErrorResponse(HttpStatus.CONFLICT,
                 "Integrity constraint has been violated.",
                 ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage());
     }
