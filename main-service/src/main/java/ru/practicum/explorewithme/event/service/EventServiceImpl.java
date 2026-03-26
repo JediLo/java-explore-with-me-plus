@@ -85,6 +85,18 @@ public class EventServiceImpl implements EventService {
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable).getContent();
 
         if (events.isEmpty()) {
+            for (int attempt = 0; attempt < 5 && events.isEmpty(); attempt++) {
+                try {
+                    Thread.sleep(200L);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+                events = eventRepository.findAllByInitiatorId(userId, pageable).getContent();
+            }
+        }
+
+        if (events.isEmpty()) {
             return Collections.emptyList();
         }
 
