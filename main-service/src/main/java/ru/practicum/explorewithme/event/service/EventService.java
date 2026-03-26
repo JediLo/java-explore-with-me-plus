@@ -12,4 +12,8 @@ public interface EventService {
     List<EventFullDto> findAllEventsToAdmin(EventAdminSettingSearchDto settingSearchDto);
 
     EventFullDto updateEventByIdToAdmin(Long eventId, UpdateEventAdminRequest adminRequest);
+
+    EventFullDto getEventByIdToUser(Long userId, Long eventId);
+
+    EventFullDto updateEventByIdToUser(Long userId, Long eventId, UpdateEventUserRequest requestDto);
 }

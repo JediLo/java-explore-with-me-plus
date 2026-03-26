@@ -1,6 +1,7 @@
 package ru.practicum.explorewithme.event.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithme.event.dto.EventFullDto;
 import ru.practicum.explorewithme.event.dto.EventShortDto;
 import ru.practicum.explorewithme.event.dto.NewEventDto;
+import ru.practicum.explorewithme.event.dto.UpdateEventUserRequest;
 import ru.practicum.explorewithme.event.service.EventService;
+import ru.practicum.explorewithme.request.dto.ParticipationRequestDto;
 
 import java.util.List;
 
@@ -40,4 +43,22 @@ public class PrivateEventController {
         log.debug("GET /users/{}/events: from={}, size={}", userId, from, size);
         return eventService.getEvents(userId, from, size);
     }
+
+    @GetMapping("/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventFullDto getEventByIdToUser(@PathVariable @NotNull Long userId,
+                                           @PathVariable @NotNull Long eventId) {
+        log.debug("GET /users/{}/events/{}", userId, eventId);
+        return eventService.getEventByIdToUser(userId,eventId);
+    }
+
+    @PatchMapping("/{eventId}")
+    @ResponseStatus(HttpStatus.OK)
+    public EventFullDto updateEvent(@PathVariable @NotNull Long userId,
+                                    @PathVariable @NotNull Long eventId,
+                                    @RequestBody(required = false) @Valid UpdateEventUserRequest requestDto) {
+        log.debug("Patch /users/{}/events/{}", userId, eventId);
+        return eventService.updateEventByIdToUser(userId, eventId, requestDto);
+    }
+
 }
