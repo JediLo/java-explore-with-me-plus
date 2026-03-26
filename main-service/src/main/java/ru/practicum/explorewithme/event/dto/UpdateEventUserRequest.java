@@ -3,7 +3,10 @@ package ru.practicum.explorewithme.event.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.practicum.explorewithme.event.model.EventStateAction;
 
 import java.time.LocalDateTime;

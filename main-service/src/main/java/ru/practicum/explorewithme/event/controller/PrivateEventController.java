@@ -13,7 +13,6 @@ import ru.practicum.explorewithme.event.dto.EventShortDto;
 import ru.practicum.explorewithme.event.dto.NewEventDto;
 import ru.practicum.explorewithme.event.dto.UpdateEventUserRequest;
 import ru.practicum.explorewithme.event.service.EventService;
-import ru.practicum.explorewithme.request.dto.ParticipationRequestDto;
 
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class PrivateEventController {
     public EventFullDto getEventByIdToUser(@PathVariable @NotNull Long userId,
                                            @PathVariable @NotNull Long eventId) {
         log.debug("GET /users/{}/events/{}", userId, eventId);
-        return eventService.getEventByIdToUser(userId,eventId);
+        return eventService.getEventByIdToUser(userId, eventId);
     }
 
     @PatchMapping("/{eventId}")
