@@ -12,6 +12,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompilationWithStats {
-    Compilation compilation;
-    Map<Long, EventStatsDto> statsDtoMap;
+    private Compilation compilation;
+    private Map<Long, EventStatsDto> statsDtoMap;
 }

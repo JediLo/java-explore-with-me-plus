@@ -20,7 +20,6 @@ import ru.practicum.explorewithme.event.model.EventState;
 import ru.practicum.explorewithme.event.model.EventStateAction;
 import ru.practicum.explorewithme.event.repository.EventRepository;
 import ru.practicum.explorewithme.exceptions.ConditionsNotMetException;
-import ru.practicum.explorewithme.exceptions.ForbiddenException;
 import ru.practicum.explorewithme.exceptions.NotFoundException;
 import ru.practicum.explorewithme.exceptions.ValidationException;
 import ru.practicum.explorewithme.request.model.RequestStatus;
@@ -29,11 +28,7 @@ import ru.practicum.explorewithme.user.model.User;
 import ru.practicum.explorewithme.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -437,10 +432,6 @@ public class EventServiceImpl implements EventService {
 
     private NotFoundException eventNotFound(Long eventId) {
         return new NotFoundException("Event with id=" + eventId + " was not found");
-    }
-
-    private ForbiddenException eventForbiddenPublished(EventState state) {
-        return new ForbiddenException("Cannot publish the event because it's not in the right state: " + state);
     }
 
     private NotFoundException categoryNotFound(Long categoryId) {

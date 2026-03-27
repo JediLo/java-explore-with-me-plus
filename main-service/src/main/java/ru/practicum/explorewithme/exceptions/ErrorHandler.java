@@ -41,7 +41,6 @@ public class ErrorHandler {
 
     @ExceptionHandler({
             ConditionsNotMetException.class,
-            ForbiddenException.class,
             ConflictException.class
     })
     public ResponseEntity<ApiError> handleConditionsNotMet(RuntimeException ex) {
