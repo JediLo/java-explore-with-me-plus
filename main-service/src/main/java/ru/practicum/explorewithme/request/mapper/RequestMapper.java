@@ -1,15 +1,14 @@
 package ru.practicum.explorewithme.request.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.explorewithme.request.dto.EventRequestStatusUpdateResult;
 import ru.practicum.explorewithme.request.dto.ParticipationRequestDto;
 import ru.practicum.explorewithme.request.model.Request;
 
 import java.util.List;
 
+@UtilityClass
 public final class RequestMapper {
-
-    private RequestMapper() {
-    }
 
     public static ParticipationRequestDto toDto(Request request) {
         if (request == null) {
