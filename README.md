@@ -44,9 +44,8 @@
   - `event_id` (FK -> `events`)
   - `author_id` (FK -> `users`)
   - `text`
-  - `created_on`
-  - `edited_on`
-  - `edited_date`
+  - `created`
+  - `edited`
 
 ### DTO
 DTO ответа:
@@ -54,16 +53,12 @@ DTO ответа:
 - `eventId`
 - `authorId`
 - `text`
-- `createdOn`
-- `editedOn`
-- `editedDate`
+- `created`
+- `edited`
 
-DTO под редактирование:
+DTO - редактирование и создание:
 - `id`
-- `eventId`
 - `text`
-- `editedOn`
-- `editedDate`
 
 ### Postman-тесты
 + добавить детальное описание тестов...
