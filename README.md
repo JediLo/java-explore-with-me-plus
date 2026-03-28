@@ -11,17 +11,17 @@
 - Текст комментария:
   - не должен быть пустым
   - длина: `1..2000`
-- todo ??
+
   
 ### Роли и права
 - **Public API**
   - Может читать комментарии к событию.
 - **Private API**
+  - Может получить свой комментарий для редактирования.
   - Может создавать комментарии к опубликованным событиям.
   - Может редактировать/удалять только свои комментарии.
 - **Admin API**
-  - Может искать комментарии по фильтрам. - ? 
-  - Может удалять любой комментарий.
+  - Может удалять любой комментарий. 
 
 ### REST API
 
@@ -32,9 +32,9 @@
 - `POST /users/{userId}/events/{eventId}/comments`
 - `PATCH /users/{userId}/comments/{commentId}`
 - `DELETE /users/{userId}/comments/{commentId}`
+- `GET /users/{userId}/events/{eventId}/comments/{commentId}`
 
 #### Admin
-- `GET /admin/comments?eventId&authorId&text&rangeStart&rangeEnd&from=0&size=10`
 - `DELETE /admin/comments/{commentId}`
 
 ### Модель данных
@@ -46,6 +46,7 @@
   - `text`
   - `created_on`
   - `edited_on`
+  - `edited_date`
 
 ### DTO
 DTO ответа:
@@ -55,10 +56,17 @@ DTO ответа:
 - `text`
 - `createdOn`
 - `editedOn`
+- `editedDate`
+
+DTO под редактирование:
+- `id`
+- `eventId`
+- `text`
+- `editedOn`
+- `editedDate`
 
 ### Postman-тесты
 + добавить детальное описание тестов...
 + тесты на ресты -> существует и выдают 200
 + тесты на валидацию дто
 + функциональные тесты
-to be continued...
