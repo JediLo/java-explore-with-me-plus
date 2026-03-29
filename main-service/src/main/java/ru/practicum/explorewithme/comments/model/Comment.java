@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import ru.practicum.explorewithme.event.model.Event;
 import ru.practicum.explorewithme.user.model.User;
 
@@ -24,14 +23,14 @@ public class Comment {
     private Event event;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
     @Column(name = "text", nullable = false, length = 2000)
     private String text;
 
     @CreationTimestamp
-    @Column(name = "created", nullable = false, updatable = false )
+    @Column(name = "created", nullable = false, updatable = false)
     private LocalDateTime created;
 
     @Column(name = "updated")
