@@ -1803,13 +1803,19 @@
                   }
                 ],
                 "url": {
-                  "raw": "{{baseUrl}}/comments/{{commentId}}",
+                  "raw": "{{baseUrl}}/comments/:commentId",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "comments",
-                    "{{commentId}}"
+                    ":commentId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "commentId",
+                      "value": "{{cid}}"
+                    }
                   ]
                 }
               },
