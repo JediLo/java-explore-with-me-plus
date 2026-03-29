@@ -16,8 +16,8 @@
 ### Роли и права
 - **Public API**
   - Может читать комментарии к событию.
+  - Может получить комментарий.
 - **Private API**
-  - Может получить свой комментарий для редактирования.
   - Может создавать комментарии к опубликованным событиям.
   - Может редактировать/удалять только свои комментарии.
 - **Admin API**
@@ -27,12 +27,12 @@
 
 #### Public
 - `GET /events/{eventId}/comments?from=0&size=10`
+- `GET /comments/{commentId}`
 
 #### Private
 - `POST /users/{userId}/events/{eventId}/comments`
 - `PATCH /users/{userId}/comments/{commentId}`
 - `DELETE /users/{userId}/comments/{commentId}`
-- `GET /users/{userId}/events/{eventId}/comments/{commentId}`
 
 #### Admin
 - `DELETE /admin/comments/{commentId}`
@@ -45,7 +45,7 @@
   - `author_id` (FK -> `users`)
   - `text`
   - `created`
-  - `edited`
+  - `updated`
 
 ### DTO
 DTO ответа:
@@ -54,7 +54,7 @@ DTO ответа:
 - `authorId`
 - `text`
 - `created`
-- `edited`
+- `updated`
 
 DTO - редактирование и создание:
 - `id`
