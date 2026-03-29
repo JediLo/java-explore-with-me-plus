@@ -38,14 +38,14 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public CommentDto addComment(Long userId, Long eventId, ShortCommentDto dto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
+                .orElseThrow(() -> userNotFound(userId));
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
+                .orElseThrow(() -> eventNotFound(eventId));
         if (event.getState() != EventState.PUBLISHED) {
             throw new ConditionsNotMetException("Event must be published to add comments");
         }
-        Comment  comment = CommentMapper.toComment(dto, user, event);
-        Comment saved  = commentRepository.save(comment);
+        Comment comment = CommentMapper.toComment(dto, user, event);
+        Comment saved = commentRepository.save(comment);
         return CommentMapper.toDto(saved);
     }
 
@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public CommentDto updateComment(Long userId, Long commentId, ShortCommentDto dto) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + " was not found"));
+                .orElseThrow(() -> commentNotFound(commentId));
         if (!comment.getAuthor().getId().equals(userId)) {
             throw new ConditionsNotMetException("Only the author of the comment can update it.");
         }
@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteComment(Long userId, Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + " was not found"));
+                .orElseThrow(() -> commentNotFound(commentId));
         if (!comment.getAuthor().getId().equals(userId)) {
             throw new ConditionsNotMetException("Only the author of the comment can delete it.");
         }
@@ -76,20 +76,14 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto getComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + " was not found"));
-        if (comment.getEvent() == null || comment.getEvent().getState() != EventState.PUBLISHED) {
-            throw new NotFoundException("Comment with id=" + commentId + " was not found");
-        }
+                .orElseThrow(() -> commentNotFound(commentId));
         return CommentMapper.toDto(comment);
     }
 
     @Override
     public List<CommentDto> getCommentsByEventId(Long eventId, int from, int size) {
-        Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
-        if (event.getState() != EventState.PUBLISHED) {
-            throw new NotFoundException("Event with id=" + eventId + " was not found");
-        }
+        eventRepository.findById(eventId)
+                .orElseThrow(() -> eventNotFound(eventId));
 
         Pageable pageable = new OffsetBasedPageRequest(from, size, Sort.by(Sort.Direction.DESC, "created"));
         return commentRepository.findAllByEventId(eventId, pageable)
@@ -102,7 +96,19 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteCommentByAdmin(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new NotFoundException("Comment with id=" + commentId + " was not found"));
+                .orElseThrow(() -> commentNotFound(commentId));
         commentRepository.delete(comment);
+    }
+
+    private NotFoundException eventNotFound(Long eventId) {
+        return new NotFoundException("Event with id=" + eventId + " was not found");
+    }
+
+    private NotFoundException commentNotFound(Long commentId) {
+        return new NotFoundException("Comment with id=" + commentId + " was not found");
+    }
+
+    private NotFoundException userNotFound(Long userId) {
+        return new NotFoundException("User with id=" + userId + " was not found");
     }
 }
