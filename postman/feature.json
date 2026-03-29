@@ -1771,7 +1771,7 @@
                       "const interval = setInterval(() => {}, 1000);\r",
                       "setTimeout(async () => {\r",
                       "    try { await main(); } catch (e) { console.error(e); } finally { clearInterval(interval); }\r",
-                      "}, 100);"
+                      "}, 100); "
                     ],
                     "type": "text/javascript",
                     "packages": {},
@@ -2001,6 +2001,14 @@
       "key": "updated_text",
       "value": "",
       "type": "string"
+    },
+    {
+      "key": "{{commentId}}",
+      "value": ""
+    },
+    {
+      "key": "commentId",
+      "value": ""
     }
   ]
 }
