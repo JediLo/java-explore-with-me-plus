@@ -1447,7 +1447,8 @@
                       "\r",
                       "const interval = setInterval(() => {}, 1000);\r",
                       "setTimeout(async () => {\r",
-                      "    try { await main(); } catch (e) { console.error(e); } finally { clearInter"
+                      "    try { await main(); } catch (e) { console.error(e); } finally { clearInterval(interval); }\r",
+                      "}, 100);"
                     ],
                     "type": "text/javascript",
                     "packages": {},
