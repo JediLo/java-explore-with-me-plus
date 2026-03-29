@@ -33,7 +33,7 @@ public class PrivateCommentController {
     public CommentDto updateComment(@PathVariable @NotNull Long userId,
                                     @PathVariable @NotNull Long commentId,
                                     @RequestBody @Valid ShortCommentDto dto) {
-        log.info("Updating comment for user {} and event {}", userId, commentId);
+        log.info("Updating comment for user {} and comment {}", userId, commentId);
         return commentService.updateComment(userId, commentId, dto);
     }
 

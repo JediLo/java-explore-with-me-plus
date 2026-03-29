@@ -25,6 +25,7 @@ public class PublicCommentController {
     public List<CommentDto> getCommentsByEventId(@PathVariable @NotNull Long eventId,
                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
                                                  @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Getting comments for event {}, from {}, size {}", eventId, from, size);
         return commentService.getCommentsByEventId(eventId, from, size);
     }
 
